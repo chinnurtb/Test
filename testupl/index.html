@@ -1,0 +1,56 @@
+<html>
+	<head>
+		<title>123</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>		
+	</head>
+<body> 
+
+<div id='div_1'>
+    <p>Список:</p>
+    <ul>
+        <li class='1231' id='asgfdg'>Строка 1</li>
+        <li id='li_2'>Строка 2</li>
+        <li id='li_3'>Строка 3</li>
+    </ul>
+</div>
+
+
+    <form id="uploadForm" action="doajaxfileupload.php" method="post" enctype="multipart/form-data">
+    	<input name="MAX_FILE_SIZE" value="1000000" type="hidden"/>
+     	File: <input id="fileurl" name="fileurl1" type="text" value="значение"/><br>
+		<input id="fileurl2" type='text' size='10' value='значение формы 2' name='firstname' />
+      	<input value="Submit" type="submit"/>
+	</form>
+
+
+
+
+	
+	
+	
+		<script type="text/javascript">
+
+		// var myUl = $('#div_1 ul'); //  сохраняем обьект в переменную myUl
+		// var content = myUl.html();  // сохраняем содержимое списка в html-виде
+		// content = content + '<li>Строка 4</li>'; //  добавляем новый элемент
+		// myUl.html(content); // заменяем старое содержимое списка новым
+
+		// $("#fileurl").val(""+$('#asgfdg')+"")
+		
+		// $("#fileurl").html($("#gr").val());
+		// alert($('.1231'));
+		
+//	alert($("input[name='firstname']").attr("value"));
+//	alert($("input[name='firstname']").attr("name"));
+
+//	alert(document.getElementById("fileurl2").value);
+
+var myUl = $(document.getElementById("fileurl2").value);
+$("#fileurl").val(myUl)
+
+					
+		
+</script>	
+</body>
+</html>

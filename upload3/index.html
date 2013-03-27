@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+</head>
+<body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+<form id="foo">
+    <label for="bar">A bar</label>
+    <input id="bar" name="bar" type="text" value="" />
+    <input type="submit" value="Send" />
+</form>
+  <!-- the result of the search will be rendered inside this div -->
+  <div id="result"></div>
+
+
+<script>
+/* attach a submit handler to the form */
+$("#foo").submit(function(event) {
+
+  /* stop form from submitting normally */
+  event.preventDefault();
+
+  /*clear result div*/
+   $("#result").html('');
+
+  /* get some values from elements on the page: */
+   var values = $(this).serialize();
+
+  /* Send the data using post and put the results in a div */
+    $.ajax({
+      url: "form.php",
+      type: "post",
+      data: values,
+      success: function(){
+          alert("success");
+           $("#result").html('submitted successfully');
+      },
+      error:function(){
+          alert("failure");
+          $("#result").html('there is error while submit');
+      }   
+    }); 
+});
+
+
+</script>
+
+</body> 
+</html>
