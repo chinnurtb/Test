@@ -1,6 +1,6 @@
 <?php
 /*
- * jQuery File Upload Plugin PHP Class 6.1.2
+ * jQuery File Upload Plugin PHP Class 6.2
  * https://github.com/blueimp/jQuery-File-Upload
  *
  * Copyright 2010, Sebastian Tschan
@@ -34,7 +34,7 @@ class UploadHandler
         'min_height' => 'Image requires a minimum height'
     );
 
-    function __construct($options = null, $initialize = true) {
+    function __construct($options = null, $initialize = true, $error_messages = null) {
         $this->options = array(
             'script_url' => $this->get_full_url().'/',
             'upload_dir' => dirname($_SERVER['SCRIPT_FILENAME']).'/files/',
@@ -66,7 +66,7 @@ class UploadHandler
             // Defines which files can be displayed inline when downloaded:
             'inline_file_types' => '/\.(gif|jpe?g|png)$/i',
             // Defines which files (based on their names) are accepted for upload:
-            'accept_file_types' => '/\.(gif|jpe?g|png|zip)$/i',
+            'accept_file_types' => '/.+$/i',
             // The php.ini settings upload_max_filesize and post_max_size
             // take precedence over the following max_file_size setting:
             'max_file_size' => null,
@@ -108,6 +108,9 @@ class UploadHandler
         );
         if ($options) {
             $this->options = array_merge($this->options, $options);
+        }
+        if ($error_messages) {
+            $this->error_messages = array_merge($this->error_messages, $error_messages);
         }
         if ($initialize) {
             $this->initialize();

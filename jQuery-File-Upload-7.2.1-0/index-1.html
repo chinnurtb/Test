@@ -3,47 +3,29 @@
 <head>
 <meta charset="utf-8">
 <title>jQuery File Upload Example</title>
+</head>
 <style>
 .bar {
     height: 18px;
     background: green;
 }
 </style>
-<link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-responsive.min.css">
-<link rel="stylesheet" href="http://blueimp.github.com/Bootstrap-Image-Gallery/css/bootstrap-image-gallery.min.css">
 <link rel="stylesheet" href="css/jquery.fileupload-ui.css">
-</head>
 <body>
 <input id="fileupload" type="file" name="files[]" data-url="server/php/" multiple>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="js/vendor/jquery.ui.widget.js"></script>
 <script src="js/jquery.iframe-transport.js"></script>
 <script src="js/jquery.fileupload.js"></script>
-<script src="js/vendor/jquery.ui.widget.js"></script>
-<script src="http://blueimp.github.com/JavaScript-Templates/tmpl.min.js"></script>
-<script src="http://blueimp.github.com/JavaScript-Load-Image/load-image.min.js"></script>
-<script src="http://blueimp.github.com/JavaScript-Canvas-to-Blob/canvas-to-blob.min.js"></script>
-<script src="http://blueimp.github.com/cdn/js/bootstrap.min.js"></script>
-<script src="http://blueimp.github.com/Bootstrap-Image-Gallery/js/bootstrap-image-gallery.min.js"></script>
-<script src="js/jquery.fileupload.js"></script>
-<script src="js/jquery.fileupload-fp.js"></script>
-<script src="js/jquery.fileupload-ui.js"></script>
-
-
-
-
-
-
-
 <script>
 $(function () {
     $('#fileupload').fileupload({
         dataType: 'json',
         done: function (e, data) {
             $.each(data.result.files, function (index, file) {
-                $('<p/>').text(file.name).appendTo(document.body);
+				$('<p/>').text(file.name).appendTo(document.body);
+                $('<p/>').text(file.url).appendTo(document.body);
+				$('<p/>').text(file.size).appendTo(document.body);
             });
         }
     });
@@ -59,32 +41,10 @@ $('#fileupload').fileupload({
         );
     }
 });
-
-$(function () {
-    $('#fileupload').fileupload({
-        dataType: 'json',
-        add: function (e, data) {
-            data.context = $('<p/>').text('Uploading...').appendTo(document.body);
-            data.submit();
-        },
-        done: function (e, data) {
-            data.context.text('Upload finished.');
-        }
-    });
-});
 </script>
 
-<form id="fileupload" action="jquery-file-upload" method="POST" enctype="multipart/form-data">
-
-<div class="span5 fileupload-progress fade">
-                <!-- The global progress bar -->
-                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                    <div class="bar" style="width:0%;"></div>
-                </div>
-                <!-- The extended global progress information -->
-                <div class="progress-extended">&nbsp;</div>
-            </div>
-</form>			
-
+<div id="progress">
+    <div class="bar" style="width: 0%;"></div>
+</div>
 </body> 
 </html>

@@ -1,5 +1,5 @@
 /*
- * jQuery File Upload User Interface Plugin 7.2
+ * jQuery File Upload User Interface Plugin 7.4.1
  * https://github.com/blueimp/jQuery-File-Upload
  *
  * Copyright 2010, Sebastian Tschan
@@ -83,7 +83,8 @@
             // widget (via file input selection, drag & drop or add API call).
             // See the basic file upload widget for more information:
             add: function (e, data) {
-                var that = $(this).data('fileupload'),
+                var that = $(this).data('blueimp-fileupload') ||
+                        $(this).data('fileupload'),
                     options = that.options,
                     files = data.files;
                 $(this).fileupload('process', data).done(function () {
@@ -109,7 +110,8 @@
             },
             // Callback for the start of each file upload request:
             send: function (e, data) {
-                var that = $(this).data('fileupload');
+                var that = $(this).data('blueimp-fileupload') ||
+                        $(this).data('fileupload');
                 if (!data.isValidated) {
                     if (!data.maxNumberOfFilesAdjusted) {
                         that._adjustMaxNumberOfFiles(-data.files.length);
@@ -138,7 +140,8 @@
             },
             // Callback for successful uploads:
             done: function (e, data) {
-                var that = $(this).data('fileupload'),
+                var that = $(this).data('blueimp-fileupload') ||
+                        $(this).data('fileupload'),
                     files = that._getFilesFromResponse(data),
                     template,
                     deferred;
@@ -195,7 +198,8 @@
             },
             // Callback for failed (abort or error) uploads:
             fail: function (e, data) {
-                var that = $(this).data('fileupload'),
+                var that = $(this).data('blueimp-fileupload') ||
+                        $(this).data('fileupload'),
                     template,
                     deferred;
                 if (data.maxNumberOfFilesAdjusted) {
@@ -259,7 +263,7 @@
             // Callback for upload progress events:
             progress: function (e, data) {
                 if (data.context) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    var progress = Math.floor(data.loaded / data.total * 100);
                     data.context.find('.progress')
                         .attr('aria-valuenow', progress)
                         .find('.bar').css(
@@ -271,13 +275,14 @@
             // Callback for global upload progress events:
             progressall: function (e, data) {
                 var $this = $(this),
-                    progress = parseInt(data.loaded / data.total * 100, 10),
+                    progress = Math.floor(data.loaded / data.total * 100),
                     globalProgressNode = $this.find('.fileupload-progress'),
                     extendedProgressNode = globalProgressNode
                         .find('.progress-extended');
                 if (extendedProgressNode.length) {
                     extendedProgressNode.html(
-                        $this.data('fileupload')._renderExtendedProgress(data)
+                        ($this.data('blueimp-fileupload') || $this.data('fileupload'))
+                            ._renderExtendedProgress(data)
                     );
                 }
                 globalProgressNode
@@ -290,7 +295,8 @@
             },
             // Callback for uploads start, equivalent to the global ajaxStart event:
             start: function (e) {
-                var that = $(this).data('fileupload');
+                var that = $(this).data('blueimp-fileupload') ||
+                        $(this).data('fileupload');
                 that._resetFinishedDeferreds();
                 that._transition($(this).find('.fileupload-progress')).done(
                     function () {
@@ -300,7 +306,8 @@
             },
             // Callback for uploads stop, equivalent to the global ajaxStop event:
             stop: function (e) {
-                var that = $(this).data('fileupload'),
+                var that = $(this).data('blueimp-fileupload') ||
+                        $(this).data('fileupload'),
                     deferred = that._addFinishedDeferreds();
                 $.when.apply($, that._getFinishedDeferreds())
                     .done(function () {
@@ -318,7 +325,8 @@
             },
             // Callback for file deletion:
             destroy: function (e, data) {
-                var that = $(this).data('fileupload');
+                var that = $(this).data('blueimp-fileupload') ||
+                        $(this).data('fileupload');
                 if (data.url) {
                     $.ajax(data);
                     that._adjustMaxNumberOfFiles(1);
@@ -414,7 +422,7 @@
 
         _formatTime: function (seconds) {
             var date = new Date(seconds * 1000),
-                days = parseInt(seconds / 86400, 10);
+                days = Math.floor(seconds / 86400);
             days = days ? days + 'd ' : '';
             return days +
                 ('0' + date.getUTCHours()).slice(-2) + ':' +
@@ -511,6 +519,12 @@
                         // so we have to resolve manually:
                         dfd.resolveWith(node);
                     }
+                    node.on('remove', function () {
+                        // If the element is removed before the
+                        // transition finishes, transition events are
+                        // not triggered, resolve manually:
+                        dfd.resolveWith(node);
+                    });
                 },
                 {
                     maxWidth: options.previewMaxWidth,
@@ -599,7 +613,7 @@
 
         _transition: function (node) {
             var dfd = $.Deferred();
-            if ($.support.transition && node.hasClass('fade')) {
+            if ($.support.transition && node.hasClass('fade') && node.is(':visible')) {
                 node.bind(
                     $.support.transition.end,
                     function (e) {
@@ -624,27 +638,28 @@
             this._on(fileUploadButtonBar.find('.start'), {
                 click: function (e) {
                     e.preventDefault();
-                    filesList.find('.start button').click();
+                    filesList.find('.start').click();
                 }
             });
             this._on(fileUploadButtonBar.find('.cancel'), {
                 click: function (e) {
                     e.preventDefault();
-                    filesList.find('.cancel button').click();
+                    filesList.find('.cancel').click();
                 }
             });
             this._on(fileUploadButtonBar.find('.delete'), {
                 click: function (e) {
                     e.preventDefault();
-                    filesList.find('.delete input:checked')
-                        .siblings('button').click();
+                    filesList.find('.toggle:checked')
+                        .closest('.template-download')
+                        .find('.delete').click();
                     fileUploadButtonBar.find('.toggle')
                         .prop('checked', false);
                 }
             });
             this._on(fileUploadButtonBar.find('.toggle'), {
                 change: function (e) {
-                    filesList.find('.delete input').prop(
+                    filesList.find('.toggle').prop(
                         'checked',
                         $(e.currentTarget).is(':checked')
                     );
@@ -654,7 +669,8 @@
 
         _destroyButtonBarEventHandlers: function () {
             this._off(
-                this.element.find('.fileupload-buttonbar button'),
+                this.element.find('.fileupload-buttonbar')
+                    .find('.start, .cancel, .delete'),
                 'click'
             );
             this._off(
@@ -666,9 +682,9 @@
         _initEventHandlers: function () {
             this._super();
             this._on(this.options.filesContainer, {
-                'click .start button': this._startHandler,
-                'click .cancel button': this._cancelHandler,
-                'click .delete button': this._deleteHandler
+                'click .start': this._startHandler,
+                'click .cancel': this._cancelHandler,
+                'click .delete': this._deleteHandler
             });
             this._initButtonBarEventHandlers();
         },

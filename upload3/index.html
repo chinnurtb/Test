@@ -8,9 +8,9 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 
-<form id="foo">
+<form id="foo" method="POST" enctype="multipart/form-data">
     <label for="bar">A bar</label>
-    <input id="bar" name="bar" type="text" value="" />
+    <input id="bar" name="bar" type="file" value="" />
     <input type="submit" value="Send" />
 </form>
   <!-- the result of the search will be rendered inside this div -->
@@ -28,17 +28,26 @@ $("#foo").submit(function(event) {
    $("#result").html('');
 
   /* get some values from elements on the page: */
-   var values = $(this).serialize();
+  // var values = $(this).serialize();
 
+   var values = new FormData();
+    jQuery.each($(fileInput), function(i) {
+        var file = this.files[0];
+        if(typeof file != 'undefined'){
+            fileName = file.name;
+        }
+  };
+	
+	
+	
   /* Send the data using post and put the results in a div */
     $.ajax({
       url: "form.php",
       type: "post",
       data: values,
-      success: function(){
-          alert("success");
-           $("#result").html('submitted successfully');
-      },
+      success: function(data){   
+           $("#result").html(data);
+         },
       error:function(){
           alert("failure");
           $("#result").html('there is error while submit');
