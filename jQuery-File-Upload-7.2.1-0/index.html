@@ -199,7 +199,7 @@
 			   <br>
 			   {%=file.name%}
 			   <br>
-			   {%=file.size%}
+			   {%=o.formatFileSize(file.size)%}
             {% } %}</td>
             <td class="name">
                 <a href="{%=file.url%}" title="{%=file.name%}" data-gallery="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
