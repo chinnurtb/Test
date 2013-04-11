@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Подгрузка контента jQuery.ajax()</title>
+
+  <!--JQUERY-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+     $("#buttonUpload").click(function(){
+       $.ajax({
+         url: "123.php",
+         type: "POST",
+         cache:true,
+         data: {data:$("#textUpload").val()},
+         success: function(data){   
+           $("#dataUpload").html(data);
+         }
+       });
+     });
+  });
+  </script>
+
+</head>
+<body>
+<form method="POST" enctype="multipart/form-data">
+  <input type="file" id="textUpload" value="" />
+  <button id="buttonUpload">Подгрузить</button>
+</form>
+  <br />
+  <hr />
+  <div id="dataUpload"></div>
+
+</body>
+</html>
