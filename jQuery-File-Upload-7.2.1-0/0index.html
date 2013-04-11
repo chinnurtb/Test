@@ -17,6 +17,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
 <meta charset="utf-8">
 <title>jQuery File Upload Demo</title>
+<meta name="description" content="File Upload widget with multiple file selection, drag&amp;drop support, progress bar and preview images for jQuery. Supports cross-domain, chunked and resumable file uploads. Works with any server-side platform (Google App Engine, PHP, Python, Ruby on Rails, Java, etc.) that supports standard HTML form file uploads.">
 <meta name="viewport" content="width=device-width">
 <!-- Bootstrap CSS Toolkit styles -->
 <link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap.min.css">
@@ -36,8 +37,38 @@
 <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
-
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="https://github.com/blueimp/jQuery-File-Upload">jQuery File Upload</a>
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li class="active"><a href="http://blueimp.github.com/jQuery-File-Upload/">Demo</a></li>
+                    <li><a href="https://github.com/blueimp/jQuery-File-Upload#download">Download</a></li>
+                    <li><a href="https://github.com/blueimp/jQuery-File-Upload">Source Code</a></li>
+                    <li><a href="https://github.com/blueimp/jQuery-File-Upload/wiki">Documentation</a></li>
+                    <li><a href="https://github.com/blueimp/jQuery-File-Upload#support">Support</a></li>
+                    <li><a href="https://blueimp.net">&copy; Sebastian Tschan</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
+    <div class="page-header">
+        <h1>jQuery File Upload Demo</h1>
+    </div>
+    <blockquote>
+        <p>File Upload widget with multiple file selection, drag&amp;drop support, progress bars and preview images for jQuery.<br>
+        Supports cross-domain, chunked and resumable file uploads and client-side image resizing.<br>
+        Works with any server-side platform (PHP, Python, Ruby on Rails, Java, Node.js, Go etc.) that supports standard HTML form file uploads.</p>
+    </blockquote>
+    <br>
     <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
         <!-- Redirect browsers with JavaScript disabled to the origin page -->
@@ -66,8 +97,7 @@
                 <input type="checkbox" class="toggle">
             </div>
             <!-- The global progress information -->
-        </div>
-	            <div class="span5 fileupload-progress fade">
+            <div class="span5 fileupload-progress fade">
                 <!-- The global progress bar -->
                 <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                     <div class="bar" style="width:0%;"></div>
@@ -75,6 +105,7 @@
                 <!-- The extended global progress information -->
                 <div class="progress-extended">&nbsp;</div>
             </div>
+        </div>
         <!-- The loading indicator is shown during file processing -->
         <div class="fileupload-loading"></div>
         <br>
@@ -82,6 +113,17 @@
         <table role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
     </form>
     <br>
+    <div class="well">
+        <h3>Demo Notes</h3>
+        <ul>
+            <li>The maximum file size for uploads in this demo is <strong>5 MB</strong> (default file size is unlimited).</li>
+            <li>Only image files (<strong>JPG, GIF, PNG</strong>) are allowed in this demo (by default there is no file type restriction).</li>
+            <li>Uploaded files will be deleted automatically after <strong>5 minutes</strong> (demo setting).</li>
+            <li>You can <strong>drag &amp; drop</strong> files from your desktop on this webpage with Google Chrome, Mozilla Firefox and Apple Safari.</li>
+            <li>Please refer to the <a href="https://github.com/blueimp/jQuery-File-Upload">project website</a> and <a href="https://github.com/blueimp/jQuery-File-Upload/wiki">documentation</a> for more information.</li>
+            <li>Built with Twitter's <a href="http://twitter.github.com/bootstrap/">Bootstrap</a> toolkit and Icons from <a href="http://glyphicons.com/">Glyphicons</a>.</li>
+        </ul>
+    </div>
 </div>
 <!-- modal-gallery is the modal dialog used for the image gallery -->
 <div id="modal-gallery" class="modal modal-gallery hide fade" data-filter=":odd" tabindex="-1">
@@ -153,7 +195,7 @@
             <td class="preview">{% if (file.thumbnail_url) { %}
                <a href="{%=file.url%}" title="{%=file.name%}" data-gallery="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
 			   <br>
-			   <div class="uplfileurl">{%=file.url%}</div>
+			   {%=file.url%}
 			   <br>
 			   {%=file.name%}
 			   <br>
@@ -217,49 +259,10 @@ $(function () {
 </script>
 -->
 <script>
-$('#fileupload').bind('fileuploaddone', function (e, data) {
-            $.each(data.result.files, function (index, file) {
-                $('input#foo').val(file.url);				
-            });
-        })
 
 </script>
 
 
-<form action="#" method="post" name="form">
-	upl file url: <input id="foo" type="text" class="forminput" name="dlurl" value="">
-	<input type="submit">
-</form>
 
-<!--
-
-<script>
-$(document).ready(function(){
-     $('.mon').click(function(){
-       var str = 'paste </br>';
-       $(this).parent().after(str);
-  });
- });
-</script>
-
-             <a href="#" class="mon">press</div>
-			 </br></br>
-
-			 
-
-		
-<a id="source" href="#">text_I_want_to_get_from_here</a><br />
-<input id="destination" type="text" name="want_to_have_here" size="40" value="">
-
-
- <script>
-$(document).ready(function() {
-$('#source').click(function() {
-   $('#destination').val($(this).html());
-});
-});
-</script>
--->
- 
 </body> 
 </html>

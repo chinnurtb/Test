@@ -196,6 +196,7 @@
                     );
                 }
             },
+			
             // Callback for failed (abort or error) uploads:
             fail: function (e, data) {
                 var that = $(this).data('blueimp-fileupload') ||
