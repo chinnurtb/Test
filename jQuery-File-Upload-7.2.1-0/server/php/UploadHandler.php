@@ -683,7 +683,7 @@ class UploadHandler
         $this->send_content_type_header();
     }
 
-    public function get($print_response = true) {
+    public function get($print_response = false) {
         if ($print_response && isset($_GET['download'])) {
             return $this->download();
         }
